@@ -1,5 +1,4 @@
 from pathlib import Path
-from pprint import pprint
 
 import requests
 
@@ -46,7 +45,7 @@ class YaUploader:
             _path: Path to the folder on the disk where  to upload the file,
             if the folder is at the disk's root, just write the folder's name.
 
-        Returns (str): Operation's status
+        Returns (str): Operation's status.
 
         """
         headers = self._get_headers()
@@ -55,8 +54,6 @@ class YaUploader:
                   }
         response = requests.post('https://cloud-api.yandex.net/v1/disk/resources/upload', headers=headers,
                                  params=params)
-        # pprint(response.json())
-        # response.raise_for_status()
         if response.status_code == 202:
             return 'Successfully uploaded'
         elif response.status_code == 409:
@@ -67,18 +64,17 @@ class YaUploader:
 
     def create_a_directory(self, _path):
         """
-        Creates a directory (folder) on yandex disk.Will return an error message  if the directory exists.
+        Creates a directory (folder) on yandex disk. Will return an error message if the directory exists.
         Args:
-            _path: Path where to create the directory on the disk
+            _path: Path where to create the directory on the disk.
 
-        Returns (str): Operation's status
+        Returns (str): Operation's status.
 
         """
         headers = self._get_headers()
         params = {"path": _path}
         response = requests.put('https://cloud-api.yandex.net/v1/disk/resources', headers=headers,
                                 params=params)
-        # pprint(response.json())
         if response.status_code == 201:
             print('Directory created successfully')
         elif response.status_code == 409:
@@ -91,9 +87,9 @@ class YaUploader:
         """
         Deletes a directory (folder) on yandex disk. Will return an error message if the directory doesn't exist.
         Args:
-            _path: Path to the directory
+            _path: Path to the directory.
 
-        Returns (str): Operation's status
+        Returns (str): Operation's status.
 
                 """
         headers = self._get_headers()

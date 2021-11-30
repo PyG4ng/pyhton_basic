@@ -33,7 +33,7 @@ class Vk:
         """
         Sends a request to the sever to get user's information on vk.com
         Args:
-            user_id: user id on vk, default value will be None
+            user_id: user id on vk, default value is None.
 
         Returns: The first result
 
@@ -50,8 +50,8 @@ class Vk:
 
     def get_friends_list(self):
         """
-        Gets user's friend's list on vk if access granted
-        Returns: A set of users id
+        Gets user's friend's list on vk if access granted.
+        Returns: A set of users id.
 
         """
         method = 'friends.get'
@@ -87,12 +87,12 @@ class Vk:
 
     def _get_photos_requests(self, album, count):
         """
-        Sends a request to get user's album pictures
+        Sends a request to get user's album pictures.
         Args:
             album (str): 'profile' or 'wall'
-            count (int):  Positive number, number of picture to get, max 100
+            count (int):  Positive number, number of picture to get, maximum 100.
 
-        Returns: Server response in json format
+        Returns: Server's response in json format.
 
         """
         method = 'photos.get'
@@ -128,7 +128,7 @@ class Vk:
                 "url": size.get("url")}
 
     def _get_biggest_picture_size(self, _sizes, _item):
-        """Method to help get the picture with the highest width and height """
+        """Method to help get the picture with the highest width and height."""
 
         for size in _sizes:
             if size.get("type") == 'w':
@@ -148,13 +148,13 @@ class Vk:
 
     def _get_pictures(self, album, count):
         """
-        Takes the server's response to get user's album pictures, find the pictures with highest
-        resolution ( width x height) and returns a list of pictures
+        Takes the server's response to get user's album pictures, finds the pictures with highest
+        resolution ( width x height) and returns a list of pictures.
         Args:
             album (str): 'profile' or 'wall'
-            count (int): Positive number, number of picture to get, max 100
+            count (int): Positive number, number of picture to get, max 100.
 
-        Returns:  a list of pictures
+        Returns: A list of pictures.
 
         """
         pictures = []
@@ -176,7 +176,7 @@ class Vk:
         Gets user's profile pictures.
         Args:
             album (str): 'profile'
-            count (int): Positive number, number of picture to get, default value 5, max 100
+            count (int): Positive number, number of picture to get, default value 5, max 100.
 
         Returns: A list of user's profile pictures.
 
@@ -190,7 +190,7 @@ class Vk:
         Gets user's wall pictures.
         Args:
             album (str): 'wall'
-            count (int): Positive number, number of picture to get, default value 5, max 100
+            count (int): Positive number, number of picture to get, default value 5, max 100.
 
         Returns: A list of user's wall pictures.
 

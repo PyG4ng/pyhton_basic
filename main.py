@@ -40,8 +40,8 @@ vk_user = Vk()
 # print(vk_user)
 # print(vk_user.get_friends_list())
 profile_pictures = vk_user.get_profile_pictures()
-# # profile_pictures = vk_user.get_wall_pictures()
-#
+# profile_pictures = vk_user.get_wall_pictures()
+
 disk = YaUploader(API_KEY_YANDEX)
 
 upload_vk_pictures_on_yandex_disk(profile_pictures, disk, 'vk_pictures', directory_exists=False)
