@@ -1,11 +1,13 @@
+import sys
 from datetime import datetime
 
 import requests
 from tqdm import tqdm
 
+from constants import API_KEY_VK
+
 VERSION = 5.131
 URI = 'https://api.vk.com/method/'
-API_KEY = '958eb5d439726565e9333aa30e50e0f937ee432e927f0dbd541c541887d919a7c56f95c04217915c32008'
 
 
 class Vk:
@@ -25,7 +27,7 @@ class Vk:
     @staticmethod
     def _get_parameters():
         return {
-            'access_token': API_KEY,
+            'access_token': API_KEY_VK,
             'v': VERSION
         }
 
@@ -45,7 +47,11 @@ class Vk:
         response = requests.get(f'{URI}{method}', params=parameters)
         response.raise_for_status()
         if response.status_code == 200:
-            return response.json().get("response")[0]
+            if response.json().get("error"):
+                print(response.json().get("error").get("error_msg"))
+                sys.exit()
+            else:
+                return response.json().get("response")[0]
         return 'Ошибка!'
 
     def get_friends_list(self):
@@ -85,7 +91,7 @@ class Vk:
                 return friends_list & other_friends_list
         return f'Error! "{other}" is not instance of class Vk'
 
-    def _get_photos_requests(self, album, count):
+    def _get_photos_requests(self, count, album):
         """
         Sends a request to get user's album pictures.
         Args:
@@ -146,7 +152,7 @@ class Vk:
             if size.get("type") == 'x':
                 return self._images_characteristics(size, _item)
 
-    def _get_pictures(self, album, count):
+    def _get_pictures(self, count, album):
         """
         Takes the server's response to get user's album pictures, finds the pictures with highest
         resolution ( width x height) and returns a list of pictures.
@@ -158,7 +164,7 @@ class Vk:
 
         """
         pictures = []
-        r = self._get_photos_requests(album, count)
+        r = self._get_photos_requests(count, album)
         if r.get("response"):
             items = r.get("response").get("items")
             for item in tqdm(items, desc=f'Getting {self.name} {album} pictures: '):
@@ -171,7 +177,7 @@ class Vk:
         elif r == 'Error!':
             return r
 
-    def get_profile_pictures(self, album="profile", count=5):
+    def get_profile_pictures(self, count=5, album="profile"):
         """
         Gets user's profile pictures.
         Args:
@@ -182,10 +188,10 @@ class Vk:
 
         """
         profile_pictures = []
-        profile_pictures.extend(self._get_pictures(album, count))
+        profile_pictures.extend(self._get_pictures(count, album))
         return profile_pictures
 
-    def get_wall_pictures(self, album="wall", count=5):
+    def get_wall_pictures(self, count=5, album="wall"):
         """
         Gets user's wall pictures.
         Args:
@@ -196,5 +202,5 @@ class Vk:
 
         """
         wall_pictures = []
-        wall_pictures.extend(self._get_pictures(album, count))
+        wall_pictures.extend(self._get_pictures(count, album))
         return wall_pictures
